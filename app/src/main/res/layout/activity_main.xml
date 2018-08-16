@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/btn_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp"
+        android:text="@string/start_btn"/>
+
+    <RadioGroup
+        android:id="@+id/radio_group_choose_app"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="75dp"
+        android:layout_marginStart="25dp"
+        android:checkedButton="@+id/btn_android_auto"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/btn_android_auto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Android Auto" />
+
+        <RadioButton
+            android:id="@+id/btn_samsung_music"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Samsung Music" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btn_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="10dp"
+        android:text="@string/end_btn"/>
+
+    <CheckBox
+        android:id="@+id/check_enable_wifi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="75dp"
+        android:layout_marginEnd="25dp"
+        android:checked="false"
+        android:text="@string/enable_wifi" />
+
+</RelativeLayout>

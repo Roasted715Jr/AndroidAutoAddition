@@ -1,4 +1,4 @@
-package io.github.roasted715jr.androidautoaddition;
+package io.github.roasted715jr.easycarapp;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("io.github.roasted715jr.androidautoaddition", appContext.getPackageName());
+        assertEquals("io.github.roasted715jr.easycarapp", appContext.getPackageName());
     }
 }

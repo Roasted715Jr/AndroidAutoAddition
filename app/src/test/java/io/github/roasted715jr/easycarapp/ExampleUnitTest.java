@@ -1,4 +1,4 @@
-package io.github.roasted715jr.androidautoaddition;
+package io.github.roasted715jr.easycarapp;
 
 import org.junit.Test;
 

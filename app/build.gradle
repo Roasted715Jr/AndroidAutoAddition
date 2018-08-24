@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "io.github.roasted715jr.androidautoaddition"
+        applicationId "io.github.roasted715jr.easycarapp"
         minSdkVersion 23
         targetSdkVersion 23
         versionCode 1

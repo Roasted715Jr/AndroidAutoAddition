@@ -16,7 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="io.github.roasted715jr.easycarapp.MainActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name="io.github.roasted715jr.easycarapp.HomeAppController">
+        <receiver android:name=".HomeAppController">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -34,11 +34,21 @@
                 android:resource="@xml/home_app_controller_info" />
         </receiver>
 
-        <activity android:name="io.github.roasted715jr.easycarapp.HomeAppControllerConfigureActivity">
+        <activity android:name=".HomeAppControllerConfigureActivity">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
+
+        <receiver android:name=".HomeStartApp">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/home_start_app_info" />
+        </receiver>
     </application>
 
 </manifest>

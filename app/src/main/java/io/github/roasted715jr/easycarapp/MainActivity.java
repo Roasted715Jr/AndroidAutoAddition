@@ -1,10 +1,12 @@
 package io.github.roasted715jr.easycarapp;
 
-import android.app.ActivityManager;
+import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiManager;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
@@ -15,23 +17,30 @@ import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
-    private ActivityManager activityManager;
-    private List<ActivityManager.RunningAppProcessInfo> runningApps;
-    private BluetoothAdapter bluetoothAdapter;
-    private Button startBtn, stopBtn;
-    private CheckBox enableAirplaneModeCheck, enableWifiCheck;
+    private int notificationId = 1;
     private Intent launchIntent;
-    private RadioButton androidAutoRadio, samsungMusicRadio;
-    private RadioGroup appRadioGroup;
+
+    //Settings Variables
+    private BluetoothAdapter bluetoothAdapter;
     private SettingsManager settingsManager;
     private TelephonyManager telephonyManager;
     private WifiManager wifiManager;
+
+    //Notifications
+    private Intent stopIntent;
+    private PendingIntent stopPendingIntent;
+    NotificationCompat.Builder notificationBuilder;
+    private NotificationManagerCompat notificationManager;
+
+    //UI
+    private Button startBtn, stopBtn;
+    private CheckBox enableWifiCheck;
+    private RadioButton androidAutoRadio, samsungMusicRadio;
+    private RadioGroup appRadioGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,21 +48,34 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //Init variables
-        activityManager = (ActivityManager) this.getSystemService(ACTIVITY_SERVICE);
+        launchIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.projection.gearhead");
+        notificationManager = NotificationManagerCompat.from(this);
+
+        //Init settings variables
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        settingsManager = new SettingsManager(bluetoothAdapter, telephonyManager, wifiManager);
+
+        //Init UI variables
         startBtn = (Button) findViewById(R.id.btn_start);
         stopBtn = (Button) findViewById(R.id.btn_stop);
-        //enableAirplaneModeCheck = (CheckBox) findViewById(R.id.check_enable_airplane_mode);
         enableWifiCheck = (CheckBox) findViewById(R.id.check_enable_wifi);
-        launchIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.projection.gearhead");
         androidAutoRadio = (RadioButton) findViewById(R.id.btn_android_auto);
         samsungMusicRadio = (RadioButton) findViewById(R.id.btn_samsung_music);
         appRadioGroup = (RadioGroup) findViewById(R.id.radio_group_choose_app);
-        telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 
-        //Init the Settings Manager
-        settingsManager = new SettingsManager(bluetoothAdapter, telephonyManager, wifiManager);
+        stopIntent  = new Intent(this, MainActivity.class).putExtra("ACTION", 0);
+        stopPendingIntent = PendingIntent.getActivity(this, 0, stopIntent, 0);
+        notificationBuilder  = new NotificationCompat.Builder(this, "default")
+                .setSmallIcon(R.drawable.ic_car_white_24dp)
+                .setContentTitle("Easy Car App")
+                .setContentText("Easy Car App is running")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setShowWhen(false)
+                .setOngoing(true)
+                .setContentIntent(stopPendingIntent)
+                .setAutoCancel(true);
 
         //Set the button listeners
         startBtn.setOnClickListener(new View.OnClickListener() {
@@ -78,11 +100,10 @@ public class MainActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             int ACTION = getIntent().getIntExtra("ACTION", 2);
-            Log.i(TAG, String.valueOf(ACTION));
             if (ACTION == 1) {
                 start();
             } else if (ACTION == 0) {
-                stop(enableWifiCheck.isChecked());
+                stop(true);
             }
         }
     }
@@ -100,20 +121,15 @@ public class MainActivity extends AppCompatActivity {
         //Launch the selected app
         startActivity(launchIntent);
 
+        notificationManager.notify(notificationId, notificationBuilder.build());
+
         finishAndRemoveTask();
     }
 
     private void stop(boolean enableWifi) {
         settingsManager.stop(enableWifi);
 
-//                runningApps = activityManager.getRunningAppProcesses();
-//                for (ActivityManager.RunningAppProcessInfo runningApp : runningApps) {
-//                    if (runningApp.processName.equals("com.google.android.music")) {
-//
-//                        activityManager.killBackgroundProcesses("com.google.android.music");
-//                        break;
-//                    }
-//                }
+        notificationManager.cancel(notificationId);
 
         finishAndRemoveTask();
     }

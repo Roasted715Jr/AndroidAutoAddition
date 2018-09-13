@@ -32,7 +32,6 @@ public class SettingsManager {
 
     public void stop(boolean enableWifi) {
         bluetoothAdapter.disable();
-        //Settings.System.putInt(getContentResolver(), Settings.Global.AIRPLANE_MODE_ON, enableAirplaneModeCheck.isChecked() ? 0 : 1);
         wifiManager.setWifiEnabled(enableWifi);
     }
 

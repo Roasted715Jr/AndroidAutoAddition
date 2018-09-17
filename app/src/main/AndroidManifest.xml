@@ -49,6 +49,8 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/home_start_app_info" />
         </receiver>
+
+        <activity android:name=".ListViewAdding"></activity>
     </application>
 
 </manifest>

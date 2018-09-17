@@ -10,7 +10,6 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -36,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     NotificationCompat.Builder notificationBuilder;
     private NotificationManagerCompat notificationManager;
 
+    private Button example;
+
     //UI
     private Button startBtn, stopBtn;
     private CheckBox enableWifiCheck;
@@ -57,6 +58,14 @@ public class MainActivity extends AppCompatActivity {
         wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         settingsManager = new SettingsManager(bluetoothAdapter, telephonyManager, wifiManager);
 
+        example = (Button) findViewById(R.id.example);
+        example.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), ListViewAdding.class));
+            }
+        });
+
         //Init UI variables
         startBtn = (Button) findViewById(R.id.btn_start);
         stopBtn = (Button) findViewById(R.id.btn_stop);
@@ -68,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         stopIntent  = new Intent(this, MainActivity.class).putExtra("ACTION", 0);
         stopPendingIntent = PendingIntent.getActivity(this, 0, stopIntent, 0);
         notificationBuilder  = new NotificationCompat.Builder(this, "default")
-                .setSmallIcon(R.drawable.ic_car_white_24dp)
+                .setSmallIcon(R.drawable.ic_car_green_24dp)
                 .setContentTitle("Easy Car App")
                 .setContentText("Easy Car App is running")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
